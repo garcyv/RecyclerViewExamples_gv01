@@ -5,6 +5,9 @@ public class Item {
     private String itemDescription;
     private String urlImage;
 
+    public Item(){
+
+    }
     public Item(String itemDescription, String urlImage) {
         this.itemDescription = itemDescription;
         this.urlImage = urlImage;

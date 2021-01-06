@@ -1,6 +1,7 @@
 package com.crisspian.recyclerviewexamples_01;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,34 +9,44 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.crisspian.recyclerviewexamples_01.adapter.ItemAdapter;
+import com.crisspian.recyclerviewexamples_01.databinding.FragmentFirstBinding;
 import com.crisspian.recyclerviewexamples_01.model.Item;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements  ItemAdapter.PasarElemento {
+    private FragmentFirstBinding mbinding;
+    ArrayList<Item>  itemlist;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false);
-    }
+        mbinding = FragmentFirstBinding.inflate(inflater,container,false);
+        return mbinding.getRoot();    }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       // NavHostFragment.findNavController(FirstFragment.this).navigate(directions);
+        itemlist= returnItemList();
+        ItemAdapter madapter = new ItemAdapter(itemlist,this);
+        mbinding.rvItem.setAdapter(madapter);
+        mbinding.rvItem.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // NavHostFragment.findNavController(FirstFragment.this).navigate(directions);
     }
 
 
-
     //Generamos un listado de datos del tipo Item.
-    private List<Item> returnItemList() {
-        List<Item> listItem = new ArrayList<>();
+    private ArrayList<Item> returnItemList() {
+        ArrayList<Item> listItem = new ArrayList<>();
         Item item01 = new Item("Zhuo Cheng you","https://unsplash.com/photos/UBvtBr_FmrY/download?force=true&w=640");
         listItem.add(item01);
         Item item02 = new Item("billow926","https://unsplash.com/photos/pNoP-qVwBFQ/download?force=true&w=640");
@@ -61,5 +72,17 @@ public class FirstFragment extends Fragment {
         Item item12 = new Item("Wesley Armstrong","https://unsplash.com/photos/q0wqYpyWDpc/download?force=true&w=640");
         listItem.add(item12);
         return listItem;
+    }
+
+    @Override
+    public void passElement(Item elemento) {
+        Bundle bundle = new Bundle();
+        String descr = elemento.getItemDescription();
+        String urlimg = elemento.getUrlImage();
+        bundle.putString("descr" ,descr);
+        bundle.putString("img" ,urlimg);
+
+        Navigation.findNavController(mbinding.getRoot())
+                .navigate(R.id.action_FirstFragment_to_SecondFragment,bundle);
     }
 }
