@@ -80,7 +80,7 @@ public class FirstFragment extends Fragment implements  ItemAdapter.PasarElement
         String descr = elemento.getItemDescription();
         String urlimg = elemento.getUrlImage();
         bundle.putString("descr" ,descr);
-        bundle.putString("img" ,urlimg);
+        bundle.putString("urlimg" ,urlimg);
 
         Navigation.findNavController(mbinding.getRoot())
                 .navigate(R.id.action_FirstFragment_to_SecondFragment,bundle);

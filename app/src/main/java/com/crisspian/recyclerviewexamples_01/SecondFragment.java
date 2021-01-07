@@ -46,7 +46,7 @@ public class SecondFragment extends Fragment {
         mBinding.tvDescription.setText(mdescr);
 
         Glide.with(getContext()).load(murlimg)
-                .into(mBinding.ivDescription);
+                .into(mBinding.imgGv);
 
 /*        mBinding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
